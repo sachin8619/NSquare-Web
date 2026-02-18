@@ -1,0 +1,7 @@
+{
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "description": "Professional Civil Engineering Office website with responsive design, dynamic project portfolio, lead generation, and an integrated admin dashboard.",
+  "name": "App"
+}
