@@ -1,0 +1,18 @@
+<%- include('../partials/header') %>
+
+<section class="section">
+  <div class="container">
+    <h1 class="mb-4">Our Services</h1>
+    <div class="grid grid-3">
+      <% services.forEach(service => { %>
+        <div class="card service-card" style="border-top: 4px solid var(--primary-color);">
+          <h3 style="color: var(--primary-color);"><%= service.title %></h3>
+          <p><%= service.shortDescription %></p>
+          <a href="/services/<%= service.slug %>" class="btn btn-outline" style="margin-top: 1rem; width: 100%; text-align: center;">View Details</a>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,55 @@
+<%- include('../partials/header') %>
+
+<section class="section">
+  <div class="container">
+    <div class="service-detail-header" style="border-bottom-color: var(--primary-color);">
+      <h1 style="color: var(--primary-color);"><%= service.title %></h1>
+      <p class="lead" style="font-size: 1.25rem; color: var(--text-primary);"><%= service.shortDescription %></p>
+    </div>
+
+    <div class="grid grid-2">
+      <div>
+        <h3>Overview</h3>
+        <p style="white-space: pre-line;"><%= service.fullDescription %></p>
+        
+        <div style="margin-top: 3rem;">
+          <h3>Our Process</h3>
+          <% service.processSteps.forEach((step, index) => { %>
+            <div class="process-step" style="background: var(--accent-color);">
+              <div class="step-number" style="color: var(--primary-color); opacity: 0.3;"><%= String(index + 1).padStart(2, '0') %></div>
+              <div>
+                <h4 style="color: var(--primary-color);">Step <%= index + 1 %></h4>
+                <p><%= step %></p>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+      
+      <div>
+        <div class="card" style="position: sticky; top: 100px;">
+          <h3>Interested in this service?</h3>
+          <p>Contact us today to discuss your requirements.</p>
+          <form action="/contact" method="POST" style="margin-top: 1.5rem;">
+            <input type="hidden" name="service" value="<%= service.title %>">
+            <div class="form-group">
+              <label>Name</label>
+              <input type="text" name="name" required>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label>Message</label>
+              <textarea name="message" rows="3">I am interested in <%= service.title %>.</textarea>
+            </div>
+            <button type="submit" class="btn" style="width: 100%;">Get in Touch</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>
