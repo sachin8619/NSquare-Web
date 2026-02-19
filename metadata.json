@@ -2,6 +2,6 @@
   "requestFramePermissions": [
     "geolocation"
   ],
-  "description": "Professional Civil Engineering Office website with responsive design, dynamic project portfolio, lead generation, and an integrated admin dashboard.",
+  "description": "Professional Civil Engineering Office website built with TypeScript, Express, and Mongoose. Features a responsive design, dynamic project portfolio, and lead generation.",
   "name": "N-Squre Engineering Design & Building pvt.Ltd"
 }

@@ -123,7 +123,10 @@ const projects = [
 
 const seedDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    const uri = process.env.MONGODB_URI;
+    if (!uri) throw new Error('MONGODB_URI is not defined');
+    
+    await mongoose.connect(uri);
     console.log('MongoDB Connected for Seeding');
 
     // Clear existing data

@@ -1,3 +1,4 @@
+import { Request, Response } from 'express';
 import Service from '../models/Service.js';
 import Project from '../models/Project.js';
 
@@ -97,80 +98,80 @@ const fallbackProjects = [
   }
 ];
 
-export const getHome = async (req, res) => {
+export const getHomeData = async (req: Request, res: Response) => {
   try {
     const services = await Service.find().limit(3);
     const projects = await Project.find().limit(3);
     
-    // Use fallback if DB is empty
-    const displayServices = services.length > 0 ? services : fallbackServices;
+    const displayServices = services.length > 0 ? services : fallbackServices.slice(0, 3);
     const displayProjects = projects.length > 0 ? projects : fallbackProjects;
 
-    res.render('pages/index', { title: 'Home', services: displayServices, projects: displayProjects });
+    res.json({ services: displayServices, projects: displayProjects });
   } catch (err) {
     console.error(err);
-    res.render('pages/index', { title: 'Home', services: fallbackServices, projects: fallbackProjects });
+    res.json({ services: fallbackServices.slice(0, 3), projects: fallbackProjects });
   }
 };
 
-export const getAbout = (req, res) => {
-  res.render('pages/about', { title: 'About Us' });
-};
-
-export const getServices = async (req, res) => {
+export const getServices = async (req: Request, res: Response) => {
   try {
     const services = await Service.find();
-    res.render('pages/services', { title: 'Services', services: services.length > 0 ? services : fallbackServices });
+    res.json(services.length > 0 ? services : fallbackServices);
   } catch (err) {
     console.error(err);
-    res.render('pages/services', { title: 'Services', services: fallbackServices });
+    res.json(fallbackServices);
   }
 };
 
-export const getServiceDetail = async (req, res) => {
+export const getServiceDetail = async (req: Request, res: Response) => {
   try {
     const service = await Service.findOne({ slug: req.params.slug });
     if (service) {
-      res.render('pages/serviceDetail', { title: service.title, service });
+      res.json(service);
     } else {
-      res.status(404).render('pages/404', { title: 'Service Not Found' });
+      const fallback = fallbackServices.find(s => s.slug === req.params.slug);
+      if (fallback) {
+        res.json(fallback);
+      } else {
+        res.status(404).json({ error: 'Service Not Found' });
+      }
     }
   } catch (err) {
     console.error(err);
-    res.status(404).render('pages/404', { title: 'Service Not Found' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
-export const getProjects = async (req, res) => {
+export const getProjects = async (req: Request, res: Response) => {
   try {
     const projects = await Project.find();
-    res.render('pages/projects', { title: 'Projects', projects: projects.length > 0 ? projects : fallbackProjects });
+    res.json(projects.length > 0 ? projects : fallbackProjects);
   } catch (err) {
     console.error(err);
-    res.render('pages/projects', { title: 'Projects', projects: fallbackProjects });
+    res.json(fallbackProjects);
   }
 };
 
-export const getProjectDetail = async (req, res) => {
+export const getProjectDetail = async (req: Request, res: Response) => {
   try {
     const project = await Project.findById(req.params.id);
     if (project) {
-      res.render('pages/projectDetail', { title: project.title, project });
+      res.json(project);
     } else {
-      res.status(404).render('pages/404', { title: 'Project Not Found' });
+      const fallback = fallbackProjects.find(p => p.id === req.params.id);
+      if (fallback) {
+        res.json(fallback);
+      } else {
+        res.status(404).json({ error: 'Project Not Found' });
+      }
     }
   } catch (err) {
     console.error(err);
-    res.status(404).render('pages/404', { title: 'Project Not Found' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
-export const getContact = (req, res) => {
-  res.render('pages/contact', { title: 'Contact Us' });
-};
-
-export const postContact = (req, res) => {
-  // Handle form submission (log it for now)
+export const postContact = (req: Request, res: Response) => {
   console.log('Contact Form Data:', req.body);
-  res.send('<script>alert("Message sent successfully!"); window.location.href="/contact";</script>');
+  res.json({ success: true, message: 'Message sent successfully!' });
 };
