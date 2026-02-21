@@ -41,21 +41,21 @@ const Contact: React.FC = () => {
                   <MapPin className="text-white/50 shrink-0" size={24} />
                   <div>
                     <div className="font-bold mb-1">Office Address</div>
-                    <div className="text-white/70 text-sm">Kathmandu, Nepal</div>
+                    <div className="text-white/70 text-sm">Syangja, Nepal</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
                   <Phone className="text-white/50 shrink-0" size={24} />
                   <div>
                     <div className="font-bold mb-1">Phone Number</div>
-                    <div className="text-white/70 text-sm">+977 1234567890</div>
+                    <div className="text-white/70 text-sm">+977 9846052527</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
                   <Mail className="text-white/50 shrink-0" size={24} />
                   <div>
                     <div className="font-bold mb-1">Email Address</div>
-                    <div className="text-white/70 text-sm">info@nsquare.com.np</div>
+                    <div className="text-white/70 text-sm">nsedb2079@Gmail.com</div>
                   </div>
                 </div>
               </div>

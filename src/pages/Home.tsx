@@ -19,37 +19,39 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      {/* Hero Section */}
-      <section className="relative py-24 overflow-hidden">
-        <div className="container relative z-10">
+      {/* Hero Section with Parallax */}
+      <section 
+        className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-cover bg-center bg-fixed"
+        style={{ backgroundImage: 'url("https://picsum.photos/seed/civilengineering/1920/1080")' }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-black/60"></div>
+        <div className="container relative z-10 py-24">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-3xl"
           >
-            <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary font-bold text-sm uppercase tracking-wider mb-6">
+            <span className="inline-block px-4 py-1 rounded-full bg-secondary text-white font-bold text-sm uppercase tracking-wider mb-6 shadow-lg">
               Engineering Excellence
             </span>
-            <h1 className="text-5xl md:text-7xl font-black text-primary mb-6 leading-tight">
-              N-Squre Engineering <br />
-              <span className="text-text-primary">Design & Building</span>
+            <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight drop-shadow-lg">
+              Building the Future <br />
+              <span className="text-secondary">With Precision</span>
             </h1>
-            <p className="text-xl text-text-secondary mb-10 max-w-2xl leading-relaxed">
-              Complete Civil Engineering & Consultancy Solutions for a sustainable future. We bring precision, innovation, and expertise to every project.
+            <p className="text-xl text-gray-200 mb-10 leading-relaxed drop-shadow-md">
+              Complete Civil Engineering & Consultancy Solutions for a sustainable future. We bring innovation, expertise, and vibrant design to every project.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link to="/contact" className="btn btn-primary">
+              <Link to="/contact" className="btn btn-secondary border-none">
                 Get a Quote
               </Link>
-              <Link to="/projects" className="btn btn-outline">
+              <Link to="/projects" className="btn bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm border border-white/30">
                 View Our Work
               </Link>
             </div>
           </motion.div>
         </div>
-        
-        {/* Background Decoration */}
-        <div className="absolute top-0 right-0 -z-10 w-1/2 h-full bg-accent/50 rounded-l-[100px]" />
       </section>
 
       {/* Services Section */}

@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
+import cookieParser from 'cookie-parser';
 import apiRoutes from './routes/index.js';
 
 dotenv.config();
@@ -15,29 +15,10 @@ async function startServer() {
   const app = express();
   const PORT = Number(process.env.PORT) || 3000;
 
-  // Database Connection
-  const connectDB = async () => {
-    try {
-      const uri = process.env.MONGODB_URI;
-      if (uri) {
-        mongoose.set('bufferCommands', false);
-        await mongoose.connect(uri, {
-          serverSelectionTimeoutMS: 5000,
-        });
-        console.log('MongoDB Connected');
-      } else {
-        console.log('MONGODB_URI not found. Running in offline mode with mock data.');
-      }
-    } catch (err: any) {
-      console.error('MongoDB Connection Error:', err.message);
-      console.log('Running in offline mode.');
-    }
-  };
-  connectDB();
-
   // Middleware
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
+  app.use(cookieParser());
 
   // API Routes
   app.use('/api', apiRoutes);

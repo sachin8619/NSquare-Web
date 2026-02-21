@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowRight } from 'lucide-react';
 
 const Services: React.FC = () => {
   const [services, setServices] = useState<any[]>([]);
 
   useEffect(() => {
+    // Update document title for SEO
+    document.title = "Our Services | N-Squre Engineering";
+    
     fetch('/api/services')
       .then(res => res.json())
       .then(data => setServices(data || []))
@@ -14,34 +16,34 @@ const Services: React.FC = () => {
   }, []);
 
   return (
-    <div className="py-20">
+    <div className="py-20 bg-white">
       <section className="container mb-16">
-        <h1 className="text-4xl font-black text-primary mb-4">Our Services</h1>
-        <p className="text-text-secondary max-w-2xl">
+        <h1 className="text-5xl md:text-6xl font-black text-black mb-6 tracking-tight">Our Services</h1>
+        <p className="text-xl text-gray-600 max-w-2xl font-light">
           Comprehensive civil engineering and consultancy solutions designed for excellence and sustainability.
         </p>
       </section>
 
       <section className="container">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-l border-black">
           {services.map((service, index) => (
             <motion.div
               key={service.slug}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.05 }}
-              className="card border-t-4 border-primary group hover:shadow-xl transition-all"
+              transition={{ delay: index * 0.05, duration: 0.4 }}
+              className="group bg-white p-8 border-r border-b border-black hover:bg-black hover:text-white transition-colors duration-300 flex flex-col"
             >
-              <h3 className="text-xl font-bold text-primary mb-4 group-hover:text-primary/80 transition-colors">
+              <h2 className="text-2xl font-bold mb-4 group-hover:text-white transition-colors">
                 {service.title}
-              </h3>
-              <p className="text-text-secondary mb-8 line-clamp-3">
+              </h2>
+              <p className="text-gray-600 mb-8 line-clamp-3 group-hover:text-gray-300 transition-colors flex-grow">
                 {service.shortDescription}
               </p>
               <Link
                 to={`/services/${service.slug}`}
-                className="btn btn-outline w-full text-sm group-hover:bg-primary group-hover:text-white"
+                className="inline-flex items-center justify-center px-6 py-3 border border-black text-black font-semibold hover:bg-white hover:text-black group-hover:border-white group-hover:text-white transition-colors duration-300 mt-auto"
               >
                 View Details
               </Link>

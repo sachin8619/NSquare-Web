@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
-import Service from '../models/Service.js';
-import Project from '../models/Project.js';
+import { getDb } from '../utils/firebase.js';
 
 // Fallback data in case DB is empty or connection fails
 const fallbackServices = [
@@ -100,8 +99,12 @@ const fallbackProjects = [
 
 export const getHomeData = async (req: Request, res: Response) => {
   try {
-    const services = await Service.find().limit(3);
-    const projects = await Project.find().limit(3);
+    const db = getDb();
+    const servicesSnap = await db.collection('services').limit(3).get();
+    const projectsSnap = await db.collection('projects').limit(3).get();
+    
+    const services = servicesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const projects = projectsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     
     const displayServices = services.length > 0 ? services : fallbackServices.slice(0, 3);
     const displayProjects = projects.length > 0 ? projects : fallbackProjects;
@@ -115,7 +118,9 @@ export const getHomeData = async (req: Request, res: Response) => {
 
 export const getServices = async (req: Request, res: Response) => {
   try {
-    const services = await Service.find();
+    const db = getDb();
+    const servicesSnap = await db.collection('services').get();
+    const services = servicesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     res.json(services.length > 0 ? services : fallbackServices);
   } catch (err) {
     console.error(err);
@@ -125,8 +130,10 @@ export const getServices = async (req: Request, res: Response) => {
 
 export const getServiceDetail = async (req: Request, res: Response) => {
   try {
-    const service = await Service.findOne({ slug: req.params.slug });
-    if (service) {
+    const db = getDb();
+    const serviceSnap = await db.collection('services').where('slug', '==', req.params.slug).limit(1).get();
+    if (!serviceSnap.empty) {
+      const service = { id: serviceSnap.docs[0].id, ...serviceSnap.docs[0].data() };
       res.json(service);
     } else {
       const fallback = fallbackServices.find(s => s.slug === req.params.slug);
@@ -144,7 +151,9 @@ export const getServiceDetail = async (req: Request, res: Response) => {
 
 export const getProjects = async (req: Request, res: Response) => {
   try {
-    const projects = await Project.find();
+    const db = getDb();
+    const projectsSnap = await db.collection('projects').get();
+    const projects = projectsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     res.json(projects.length > 0 ? projects : fallbackProjects);
   } catch (err) {
     console.error(err);
@@ -154,9 +163,10 @@ export const getProjects = async (req: Request, res: Response) => {
 
 export const getProjectDetail = async (req: Request, res: Response) => {
   try {
-    const project = await Project.findById(req.params.id);
-    if (project) {
-      res.json(project);
+    const db = getDb();
+    const projectDoc = await db.collection('projects').doc(req.params.id).get();
+    if (projectDoc.exists) {
+      res.json({ id: projectDoc.id, ...projectDoc.data() });
     } else {
       const fallback = fallbackProjects.find(p => p.id === req.params.id);
       if (fallback) {
