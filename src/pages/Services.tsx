@@ -10,7 +10,13 @@ const Services: React.FC = () => {
     document.title = "Our Services | N-Squre Engineering";
     
     fetch('/api/services')
-      .then(res => res.json())
+      .then(res => {
+        const contentType = res.headers.get('content-type');
+        if (res.ok && contentType && contentType.includes('application/json')) {
+          return res.json();
+        }
+        throw new Error(`Server error: ${res.status}`);
+      })
       .then(data => setServices(data || []))
       .catch(err => console.error('Error fetching services:', err));
   }, []);

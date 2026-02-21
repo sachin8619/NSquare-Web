@@ -21,13 +21,17 @@ const Login: React.FC = () => {
       body: JSON.stringify({ idToken }),
     });
     
-    const data = await response.json();
+    let data: any = {};
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      data = await response.json();
+    }
     
     if (response.ok) {
       await checkAuth();
       navigate('/');
     } else {
-      throw new Error(data.error || 'Failed to create session');
+      throw new Error(data.error || `Server error: ${response.status}`);
     }
   };
 

@@ -9,7 +9,13 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     fetch('/api/home-data')
-      .then(res => res.json())
+      .then(res => {
+        const contentType = res.headers.get('content-type');
+        if (res.ok && contentType && contentType.includes('application/json')) {
+          return res.json();
+        }
+        throw new Error(`Server error: ${res.status}`);
+      })
       .then(data => {
         setServices(data.services || []);
         setProjects(data.projects || []);

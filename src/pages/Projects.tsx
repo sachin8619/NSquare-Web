@@ -8,7 +8,13 @@ const Projects: React.FC = () => {
 
   useEffect(() => {
     fetch('/api/projects')
-      .then(res => res.json())
+      .then(res => {
+        const contentType = res.headers.get('content-type');
+        if (res.ok && contentType && contentType.includes('application/json')) {
+          return res.json();
+        }
+        throw new Error(`Server error: ${res.status}`);
+      })
       .then(data => setProjects(data || []))
       .catch(err => console.error('Error fetching projects:', err));
   }, []);

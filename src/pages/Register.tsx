@@ -32,13 +32,17 @@ const Register: React.FC = () => {
         body: JSON.stringify({ idToken }),
       });
 
-      const data = await response.json();
+      let data: any = {};
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        data = await response.json();
+      }
 
       if (response.ok) {
         await checkAuth();
         navigate('/');
       } else {
-        setError(data.error || 'Failed to create session');
+        setError(data.error || `Server error: ${response.status}`);
       }
     } catch (err: any) {
       setError(err.message || 'Registration failed');
