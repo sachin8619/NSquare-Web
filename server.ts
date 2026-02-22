@@ -20,8 +20,19 @@ async function startServer() {
   app.use(express.json());
   app.use(cookieParser());
 
+  // Health check
+  app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok', message: 'Server is running' });
+  });
+
   // API Routes
+  console.log('Registering API routes...');
   app.use('/api', apiRoutes);
+
+  // 404 for API
+  app.use('/api/*', (req, res) => {
+    res.status(404).json({ error: `API route not found: ${req.originalUrl}` });
+  });
 
   // Vite middleware for development
   if (process.env.NODE_ENV !== 'production') {
